@@ -9,47 +9,59 @@ Only compiles if ARDUINO is defined, which is from the compile process.
 #include <Arduino.h>
 #include <SPI.h>
 
+SPIClass vspi = SPIClass(VSPI);
+
 // setup microcontroller pin as output
-void _ads126x_setup_output(uint8_t pin) {
-  pinMode(pin,OUTPUT);
+void _ads126x_setup_output(uint8_t pin)
+{
+  pinMode(pin, OUTPUT);
 }
 
 // setup microcontroller pin as input
-void _ads126x_setup_input(uint8_t pin) {
-  pinMode(pin,INPUT);
+void _ads126x_setup_input(uint8_t pin)
+{
+  pinMode(pin, INPUT);
 }
 
 // read microcontroller digital pin
-uint8_t _ads126x_read_pin(uint8_t pin) {
+uint8_t _ads126x_read_pin(uint8_t pin)
+{
   return digitalRead(pin);
 }
 
 // write value to microcontroller digital pin
-void _ads126x_write_pin_high(uint8_t pin) {
-  digitalWrite(pin,HIGH);
+void _ads126x_write_pin_high(uint8_t pin)
+{
+  digitalWrite(pin, HIGH);
 }
-void _ads126x_write_pin_low(uint8_t pin) {
-  digitalWrite(pin,LOW);
+void _ads126x_write_pin_low(uint8_t pin)
+{
+  digitalWrite(pin, LOW);
 }
 
 // setup spi
-void _ads126x_spi_setup() {
-  SPI.begin();
+void _ads126x_spi_setup()
+{
+  //SPI.begin();
+  vspi.begin();
 }
 
 // write buffer to spi, save results over the buffer
-void _ads126x_spi_rw(uint8_t buff[],uint8_t len) {
-  SPI.beginTransaction( SPISettings(2000000, MSBFIRST, SPI_MODE1) ); // 2 MHz
-  
-  for(uint8_t i=0;i<len;i++) {
-    buff[i] = SPI.transfer(buff[i]);
+void _ads126x_spi_rw(uint8_t buff[], uint8_t len)
+{
+  vspi.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE1)); // 2 MHz
+
+  for (uint8_t i = 0; i < len; i++)
+  {
+    buff[i] = vspi.transfer(buff[i]);
   }
-  
-  SPI.endTransaction();
+
+  vspi.endTransaction();
 }
 
 // wait for the desired milliseconds
-void _ads126x_delay(uint16_t ms) {
+void _ads126x_delay(uint16_t ms)
+{
   delay(ms);
 }
 
