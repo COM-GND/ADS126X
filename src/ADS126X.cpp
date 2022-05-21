@@ -462,6 +462,12 @@ void ADS126X::setDelay(uint8_t del)
   ADS126X::writeRegister(ADS126X_MODE0);
 }
 
+void ADS126X::setRefRevMode(uint8_t mode)
+{
+  REGISTER.MODE0.bit.REFREV = mode;
+  ADS126X::writeRegister(ADS126X_MODE0);
+}
+
 /*!< MODE1 register       */
 
 void ADS126X::setFilter(uint8_t filter)
